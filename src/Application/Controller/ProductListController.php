@@ -23,6 +23,6 @@ final readonly class ProductListController {
 
         $products =$this->products->all(page: $input->page, perPage: $input->perPage);
 
-        return $this->jsonResponseFactory->create(ProductOutput::fromMany(...$products));
+        return $this->jsonResponseFactory->create(ProductOutput::fromMany($products));
     }
 }

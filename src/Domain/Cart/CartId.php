@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Acme\Domain\Product;
+namespace Acme\Domain\Cart;
 
-final readonly class ProductId {
-    private const string PREFIX = 'prd_';
+final readonly class CartId {
+    private const string PREFIX = 'crt_';
 
     public static function some(): self {
         return new self(self::PREFIX.bin2hex(random_bytes(16)));
@@ -17,11 +17,7 @@ final readonly class ProductId {
 
     public function __construct(public string $value) {
         if (false === str_starts_with($value, self::PREFIX)) {
-            throw new InvalidProductException('Invalid product id: '.$value);
+            throw new InvalidCartException('Invalid cart id: '.$value);
         }
-    }
-
-    public function equals(self $other): bool {
-        return $this->value === $other->value;
     }
 }

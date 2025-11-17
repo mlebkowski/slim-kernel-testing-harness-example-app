@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Acme\Application\Controller;
 
 use Acme\Domain\Product\Product;
+use Acme\Domain\Product\ProductCollection;
 use function WonderNetwork\SlimKernel\Collection\map;
 
 final readonly class ProductOutput {
@@ -19,8 +20,8 @@ final readonly class ProductOutput {
     /**
      * @return self[]
      */
-    public static function fromMany(Product ...$products): array {
-        return map($products, self::fromEntity(...));
+    public static function fromMany(ProductCollection $products): array {
+        return map($products->items, self::fromEntity(...));
     }
 
     public function __construct(

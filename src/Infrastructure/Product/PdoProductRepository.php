@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Acme\Infrastructure\Product;
 
+use Acme\Domain\Product\ProductCollection;
 use Acme\Domain\Product\ProductNotFoundException;
 use Acme\Domain\Product\InvalidProductException;
 use Acme\Domain\Product\Product;
@@ -33,10 +34,7 @@ final readonly class PdoProductRepository implements ProductRepository {
         return $this->hydrateOne($data);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function all(int $page, int $perPage): array {
+    public function all(int $page, int $perPage): ProductCollection {
         $page = max(1, $page);
         $perPage = min(10, $perPage);
         $skip = ($page - 1) * $perPage;
@@ -45,9 +43,28 @@ final readonly class PdoProductRepository implements ProductRepository {
         $products = $this->pdo->prepare("SELECT * FROM product LIMIT :skip, :perPage");
         $products->execute([':skip' => $skip, ':perPage' => $perPage]);
 
-        return map(
-            $products->fetchAll(PDO::FETCH_ASSOC),
-            $this->hydrateOne(...),
+        return new ProductCollection(
+            ...
+            map(
+                $products->fetchAll(PDO::FETCH_ASSOC),
+                $this->hydrateOne(...),
+            ),
+        );
+    }
+
+
+    public function getMany(ProductId ...$ids): ProductCollection {
+        $products = $this->pdo->prepare("SELECT * FROM product WHERE id in (:ids)");
+        $products->execute([
+            ':ids' => map($ids, static fn (ProductId $id) => $id->value),
+        ]);
+
+        return new ProductCollection(
+            ...
+            map(
+                $products->fetchAll(PDO::FETCH_ASSOC),
+                $this->hydrateOne(...),
+            ),
         );
     }
 
@@ -82,6 +99,12 @@ final readonly class PdoProductRepository implements ProductRepository {
         return $data ? $this->hydrateOne($data) : null;
     }
 
+    public function delete(Product $product): void {
+        $this->pdo
+            ->prepare("DELETE FROM product WHERE id = :id")
+            ->execute([':id' => $product->id->value]);
+    }
+
     /**
      * Doctrine should do the heavy lifting, but the entities are small
      * enough so that this isn’t a chore. My LLM fills it almost entirely
@@ -95,11 +118,5 @@ final readonly class PdoProductRepository implements ProductRepository {
             name: ProductName::of($accessor->string('name')),
             price: ProductPrice::of($accessor->int('price')),
         );
-    }
-
-    public function delete(Product $product): void {
-        $this->pdo
-            ->prepare("DELETE FROM product WHERE id = :id")
-            ->execute([':id' => $product->id->value]);
     }
 }

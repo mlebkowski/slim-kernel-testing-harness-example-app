@@ -10,10 +10,9 @@ interface ProductRepository {
      */
     public function get(ProductId $id): Product;
 
-    /**
-     * @return Product[]
-     */
-    public function all(int $page, int $perPage): array;
+    public function getMany(ProductId ...$ids): ProductCollection;
+
+    public function all(int $page, int $perPage): ProductCollection;
 
     public function save(Product $product): void;
 
