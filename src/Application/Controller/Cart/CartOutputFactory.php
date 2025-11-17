@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Acme\Application\Controller\Cart;
 
 use Acme\Domain\Cart\Cart;
-use Acme\Domain\Cart\CartItem;
 use Acme\Domain\Cart\PriceCalculator;
 use function WonderNetwork\SlimKernel\Collection\map;
 

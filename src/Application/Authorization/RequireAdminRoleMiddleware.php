@@ -6,7 +6,6 @@ namespace Acme\Application\Authorization;
 
 use Acme\Application\Http\JsonResponseFactory;
 use Fig\Http\Message\StatusCodeInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
