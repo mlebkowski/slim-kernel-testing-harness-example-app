@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Acme\Infrastructure\Product;
 
-use RuntimeException;
+use Acme\Domain\Product\ProductNotFoundException;
 use Acme\Domain\Product\InvalidProductException;
 use Acme\Domain\Product\Product;
 use Acme\Domain\Product\ProductId;
@@ -19,8 +19,18 @@ final readonly class PdoProductRepository implements ProductRepository {
     public function __construct(private PDO $pdo) {
     }
 
-    public function get(string $id): Product {
-        throw new RuntimeException('Not implemented');
+    public function get(ProductId $id): Product {
+        $sql = $this->pdo->prepare(
+            <<<SQL
+            SELECT * FROM product WHERE id = :id
+            SQL,
+        );
+        $sql->execute([
+            ':id' => $id->value,
+        ]);
+
+        $data = $sql->fetch(PDO::FETCH_ASSOC) ?? throw new ProductNotFoundException();
+        return $this->hydrateOne($data);
     }
 
     /**
@@ -85,5 +95,11 @@ final readonly class PdoProductRepository implements ProductRepository {
             name: ProductName::of($accessor->string('name')),
             price: ProductPrice::ofInteger($accessor->int('price')),
         );
+    }
+
+    public function delete(Product $product): void {
+        $this->pdo
+            ->prepare("DELETE FROM product WHERE id = :id")
+            ->execute([':id' => $product->id->value]);
     }
 }

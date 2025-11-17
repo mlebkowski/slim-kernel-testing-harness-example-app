@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Acme\Domain\Product;
 
 interface ProductRepository {
-    public function get(string $id): Product;
+    /**
+     * @throws ProductNotFoundException
+     */
+    public function get(ProductId $id): Product;
 
     /**
      * @return Product[]
@@ -15,4 +18,6 @@ interface ProductRepository {
     public function save(Product $product): void;
 
     public function findByName(string $name): ?Product;
+
+    public function delete(Product $product): void;
 }

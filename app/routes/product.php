@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Acme\Application\Authorization\RequireAdminRoleMiddleware;
 use Acme\Application\Controller\ProductAddController;
+use Acme\Application\Controller\ProductDeleteController;
 use Acme\Application\Controller\ProductListController;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface;
@@ -13,6 +14,9 @@ return static function (App $app): void {
         ->group('/product', function (RouteCollectorProxyInterface $app): void {
             $app->get('', ProductListController::class);
             $app->post('', ProductAddController::class);
+            $app->group('/{id}', function (RouteCollectorProxyInterface $app): void {
+                $app->delete('', ProductDeleteController::class);
+            });
         })
         ->add(RequireAdminRoleMiddleware::class);
 };

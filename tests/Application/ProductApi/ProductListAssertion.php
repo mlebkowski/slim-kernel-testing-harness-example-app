@@ -10,22 +10,33 @@ use WonderNetwork\SlimKernelTestingHarness\Assertion\JsonListResponseAssertion;
 final readonly class ProductListAssertion {
     use JsonListResponseAssertion;
 
-    public function named(string $name): ProductAssertion {
-        $result = $this->filteredBy('name', $name);
-        if (0 === count($result->items->data)) {
-            Assert::assertNotCount(
-                expectedCount: 0,
-                haystack: $result->items->data,
-                message: "Expected product '$name' to be listed.",
-            );
-        }
+    public function named(string $name): self {
+        return $this->filteredBy('name', $name);
+    }
 
-        return $result->first();
+    public function assertExists(): self {
+        Assert::assertNotCount(
+            expectedCount: 0,
+            haystack: $this->items->data,
+            message: "No such product exists.",
+        );
+        return $this;
+    }
+
+    public function assertDoesNotExist(): self {
+        Assert::assertCount(
+            expectedCount: 0,
+            haystack: $this->items->data,
+            message: "Product wasn’t expected to exist.",
+        );
+
+        return $this;
     }
 
     public function first(): ProductAssertion {
         return ProductAssertion::ofAccessor(
-            $this->items->getFirstItemDataAccessor(),
+            httpClient: $this->response->httpClient,
+            data: $this->items->getFirstItemDataAccessor(),
         );
     }
 
