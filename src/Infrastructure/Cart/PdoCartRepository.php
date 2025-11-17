@@ -29,14 +29,16 @@ final readonly class PdoCartRepository implements CartRepository {
 
         $itemSql = $this->pdo->prepare('SELECT * FROM cart_item WHERE cart_id = :id');
         $itemSql->execute([':id' => $id->value]);
-        $itemData = $itemSql->fetchAll(PDO::FETCH_ASSOC);
+        $itemData = map(
+            $itemSql->fetchAll(PDO::FETCH_ASSOC),
+            static fn (mixed $itemData) => ArrayAccessor::of($itemData),
+        );
 
         return new Cart(
             id: CartId::of($cartDataAccessor->requireString('id')),
             userId: $cartDataAccessor->requireString('user_id'),
             items: map(
                 $itemData,
-                static fn (mixed $itemData) => ArrayAccessor::of($itemData),
                 static fn (ArrayAccessor $data) => new CartItem(
                     productId: ProductId::of($data->requireString('product_id')),
                     quantity: $data->requireInt('quantity'),

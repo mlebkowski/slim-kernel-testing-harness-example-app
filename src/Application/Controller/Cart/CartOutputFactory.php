@@ -18,10 +18,7 @@ final readonly class CartOutputFactory {
             id: $cart->id->value,
             userId: $cart->userId,
             totalPrice: $this->priceCalculator->calculate(...$cart->items)->value,
-            items: map(
-                $cart->items,
-                static fn (CartItem $item) => CartItemOutput::fromEntity($item),
-            ),
+            items: map($cart->items, CartItemOutput::fromEntity(...)),
         );
     }
 }

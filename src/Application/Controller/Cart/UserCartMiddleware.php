@@ -36,6 +36,7 @@ final readonly class UserCartMiddleware implements MiddlewareInterface {
             throw new HttpNotFoundException($request);
         }
 
+        /** @var ?User $user */
         $user = $request->getAttribute(User::class);
 
         if ($user?->id !== $cart->userId) {
