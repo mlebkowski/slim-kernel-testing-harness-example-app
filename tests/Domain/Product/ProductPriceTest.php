@@ -6,11 +6,18 @@ namespace Acme\Domain\Product;
 
 use PHPUnit\Framework\TestCase;
 
-class ProductPriceTest extends TestCase {
-    public function testTooMuchPrecision(): void {
-        $this->expectException(InvalidProductException::class);
-        $this->expectExceptionMessage('Price has to high precision: 12.995');
+final class ProductPriceTest extends TestCase {
+    public function testAdd(): void {
+        self::assertEquals(
+            expected: ProductPrice::of(3),
+            actual: ProductPrice::of(2)->add(ProductPrice::of(1)),
+        );
+    }
 
-        ProductPrice::of(12.995);
+    public function testMul(): void {
+        self::assertEquals(
+            expected: ProductPrice::of(120),
+            actual: ProductPrice::of(30)->mul(4),
+        );
     }
 }

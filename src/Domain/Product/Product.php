@@ -8,7 +8,7 @@ final readonly class Product {
     /**
      * @throws InvalidProductException
      */
-    public static function new(string $name, float $price): self {
+    public static function new(string $name, int $price): self {
         return new self(
             id: ProductId::some(),
             name: ProductName::of($name),

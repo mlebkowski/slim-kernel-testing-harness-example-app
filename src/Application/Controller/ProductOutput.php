@@ -26,7 +26,7 @@ final readonly class ProductOutput {
     public function __construct(
         public string $id,
         public string $name,
-        public float $price,
+        public int $price,
     ) {
     }
 }

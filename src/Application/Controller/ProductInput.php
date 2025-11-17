@@ -6,5 +6,5 @@ namespace Acme\Application\Controller;
 
 class ProductInput {
     public string $name;
-    public float $price;
+    public int $price;
 }

@@ -6,5 +6,5 @@ namespace Acme\Application\Controller;
 
 class ProductUpdateInput {
     public ?string $name = null;
-    public ?float $price = null;
+    public ?int $price = null;
 }

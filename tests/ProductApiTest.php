@@ -19,19 +19,19 @@ final class ProductApiTest extends Application\ApplicationTestCase {
 
     public function testCanAddProduct(): void {
         $this->productUseCase(Role::Admin)
-            ->add(name: 'Fallout 2', price: 2.99);
+            ->add(name: 'Fallout 2', price: 299);
 
         $this->productUseCase(Role::Admin)
             ->list(perPage: 10)
             ->named('Fallout 2')
             ->assertExists()
             ->first()
-            ->assertPrice(2.99);
+            ->assertPrice(299);
     }
 
     public function testCanRemoveProduct(): void {
         $this->productUseCase(Role::Admin)
-            ->add(name: 'Fallout 2', price: 2.99);
+            ->add(name: 'Fallout 2', price: 299);
 
         $this->productUseCase(Role::Admin)
             ->list(perPage: 10)
@@ -47,7 +47,7 @@ final class ProductApiTest extends Application\ApplicationTestCase {
 
     public function testCanEditProduct(): void {
         $randomName = 'Diablo & Hellfire';
-        $randomPrice = 0.50; // is it on sale?
+        $randomPrice = 50; // is it on sale?
 
         $productApi = $this->productUseCase(Role::Admin);
 
@@ -68,7 +68,7 @@ final class ProductApiTest extends Application\ApplicationTestCase {
         $this->productUseCase(Role::Admin)
             ->expectFailure()
             // that’s in the fixtures!
-            ->add(name: 'Fallout', price: 2.99)
+            ->add(name: 'Fallout', price: 299)
             ->slimErrorPage()
             ->assertMessage('Product already exists!');
     }
@@ -81,7 +81,7 @@ final class ProductApiTest extends Application\ApplicationTestCase {
 
         $this->productUseCase(Role::None)
             ->expectFailure()
-            ->add(name: 'Fallout 2', price: 2.99)
+            ->add(name: 'Fallout 2', price: 299)
             ->assertForbidden();
     }
 }

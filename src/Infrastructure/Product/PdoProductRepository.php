@@ -64,7 +64,7 @@ final readonly class PdoProductRepository implements ProductRepository {
             ->execute([
                 ':id' => $product->id->value,
                 ':name' => $product->name->value,
-                ':price' => $product->price->toInteger(),
+                ':price' => $product->price->value,
             ]);
     }
 
@@ -93,7 +93,7 @@ final readonly class PdoProductRepository implements ProductRepository {
         return new Product(
             id: ProductId::of($accessor->string('id')),
             name: ProductName::of($accessor->string('name')),
-            price: ProductPrice::ofInteger($accessor->int('price')),
+            price: ProductPrice::of($accessor->int('price')),
         );
     }
 

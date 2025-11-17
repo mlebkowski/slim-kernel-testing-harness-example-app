@@ -14,10 +14,10 @@ final readonly class ProductFixturesStartupHook implements StartupHook {
     public function __invoke(ServicesBuilder $builder, ContainerInterface $container): void {
         $repository = $container->get(ProductRepository::class);
 
-        $repository->save(Product::new(name: "Fallout", price: 1.99));
-        $repository->save(Product::new(name: "Don’t Starve", price: 2.99));
-        $repository->save(Product::new(name: "Baldur’s Gate", price: 3.99));
-        $repository->save(Product::new(name: "Icewind Dale", price: 4.99));
-        $repository->save(Product::new(name: "Bloodborne", price: 5.99));
+        $repository->save(Product::new(name: "Fallout", price: 199));
+        $repository->save(Product::new(name: "Don’t Starve", price: 299));
+        $repository->save(Product::new(name: "Baldur’s Gate", price: 399));
+        $repository->save(Product::new(name: "Icewind Dale", price: 499));
+        $repository->save(Product::new(name: "Bloodborne", price: 599));
     }
 }

@@ -5,32 +5,25 @@ declare(strict_types=1);
 namespace Acme\Domain\Product;
 
 final readonly class ProductPrice {
-    const int PRECISION = 100;
-
-    public static function ofInteger(int $price): self {
-        return self::of($price / self::PRECISION);
+    public static function zero(): self {
+        return new self(0);
     }
 
-    /**
-     * @throws InvalidProductException
-     */
-    public static function of(float $price): self {
+    public static function of(int $price): self {
         return new self($price);
     }
 
-    /**
-     * @throws InvalidProductException
-     */
-    public function __construct(public float $value) {
-        $value *= self::PRECISION;
-
-        if ((float) (int) $value !== $value) {
-            // my current project has this spaceless concatenation in its code style 🤦‍♀️
-            throw new InvalidProductException('Price has to high precision: '.($value / self::PRECISION));
-        }
+    private function __construct(public int $value) {
     }
 
-    public function toInteger(): int {
-        return (int) ($this->value * self::PRECISION);
+    /**
+     * Operating on integers just to be triple sure
+     */
+    public function add(self $other): self {
+        return new self($this->value + $other->value);
+    }
+
+    public function mul(int $quantity): self {
+        return new self($this->value * $quantity);
     }
 }

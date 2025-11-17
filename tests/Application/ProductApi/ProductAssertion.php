@@ -14,7 +14,7 @@ final readonly class ProductAssertion {
             httpClient: $httpClient,
             id: $data->string('id'),
             name: $data->string('name'),
-            price: $data->float('price'),
+            price: $data->int('price'),
         );
     }
 
@@ -22,7 +22,7 @@ final readonly class ProductAssertion {
         private SlimKernelHttpClient $httpClient,
         public string $id,
         private string $name,
-        private float $price,
+        private int $price,
     ) {
     }
 
@@ -30,7 +30,7 @@ final readonly class ProductAssertion {
         $this->httpClient->delete("/product/{$this->id}");
     }
 
-    public function assertPrice(float $expected): self {
+    public function assertPrice(int $expected): self {
         Assert::assertSame($expected, $this->price);
         return $this;
     }
