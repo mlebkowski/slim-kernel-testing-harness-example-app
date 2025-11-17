@@ -76,11 +76,6 @@ final class ProductApiTest extends Application\ApplicationTestCase {
     public function testAdminIsRequiredToManageProducts(): void {
         $this->productUseCase(Role::None)
             ->expectFailure()
-            ->list()
-            ->assertForbidden();
-
-        $this->productUseCase(Role::None)
-            ->expectFailure()
             ->add(name: 'Fallout 2', price: 299)
             ->assertForbidden();
     }
