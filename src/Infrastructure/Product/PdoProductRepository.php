@@ -1,0 +1,89 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Acme\Infrastructure\Product;
+
+use RuntimeException;
+use Acme\Domain\Product\InvalidProductException;
+use Acme\Domain\Product\Product;
+use Acme\Domain\Product\ProductId;
+use Acme\Domain\Product\ProductName;
+use Acme\Domain\Product\ProductPrice;
+use Acme\Domain\Product\ProductRepository;
+use PDO;
+use WonderNetwork\SlimKernel\Accessor\ArrayAccessor;
+use function WonderNetwork\SlimKernel\Collection\map;
+
+final readonly class PdoProductRepository implements ProductRepository {
+    public function __construct(private PDO $pdo) {
+    }
+
+    public function get(string $id): Product {
+        throw new RuntimeException('Not implemented');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function all(int $page, int $perPage): array {
+        $page = max(1, $page);
+        $perPage = min(10, $perPage);
+        $skip = ($page - 1) * $perPage;
+
+        // limit based pagination ain’t the greatest, but…
+        $products = $this->pdo->prepare("SELECT * FROM product LIMIT :skip, :perPage");
+        $products->execute([':skip' => $skip, ':perPage' => $perPage]);
+
+        return map(
+            $products->fetchAll(PDO::FETCH_ASSOC),
+            $this->hydrateOne(...),
+        );
+    }
+
+    public function save(Product $product): void {
+        // sqlite has a different upsert syntax
+        $this->pdo
+            ->prepare(
+                <<<SQL
+                INSERT INTO product (id, name, price) 
+                VALUES (:id, :name, :price)
+                ON CONFLICT DO UPDATE SET name = :name, price = :price
+                SQL,
+            )
+            ->execute([
+                ':id' => $product->id->value,
+                ':name' => $product->name->value,
+                ':price' => $product->price->toInteger(),
+            ]);
+    }
+
+    public function findByName(string $name): ?Product {
+        $sql = $this->pdo->prepare(
+            <<<SQL
+            SELECT * FROM product WHERE name = :name
+            SQL,
+        );
+        $sql->execute([
+            ':name' => $name,
+        ]);
+
+        $data = $sql->fetch(PDO::FETCH_ASSOC);
+        return $data ? $this->hydrateOne($data) : null;
+    }
+
+    /**
+     * Doctrine should do the heavy lifting, but the entities are small
+     * enough so that this isn’t a chore. My LLM fills it almost entirely
+     *
+     * @throws InvalidProductException
+     */
+    private function hydrateOne(mixed $row): Product {
+        $accessor = ArrayAccessor::of($row);
+        return new Product(
+            id: ProductId::of($accessor->string('id')),
+            name: ProductName::of($accessor->string('name')),
+            price: ProductPrice::ofInteger($accessor->int('price')),
+        );
+    }
+}

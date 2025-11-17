@@ -1,0 +1,21 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Acme\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Acme\\": "tests"
+    }
+  },
+  "require": {
+    "php": ">=8.3"
+  },
+  "require-dev": {
+    "wondernetwork/slim-kernel-testing-harness": "^1",
+    "phpunit/phpunit": "^12.4",
+    "phpstan/phpstan": "^2.1",
+    "bnf/phpstan-psr-container": "^1.1"
+  }
+}
