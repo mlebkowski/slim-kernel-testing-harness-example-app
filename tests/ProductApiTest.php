@@ -26,4 +26,16 @@ final class ProductApiTest extends Application\ApplicationTestCase {
             ->slimErrorPage()
             ->assertMessage('Product already exists!');
     }
+
+    public function testAdminIsRequiredToManageProducts(): void {
+        $this->productUseCase(Role::None)
+            ->expectFailure()
+            ->list()
+            ->assertForbidden();
+
+        $this->productUseCase(Role::None)
+            ->expectFailure()
+            ->add(name: 'Fallout 2', price: 2.99)
+            ->assertForbidden();
+    }
 }

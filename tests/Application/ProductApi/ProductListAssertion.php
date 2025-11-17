@@ -28,4 +28,8 @@ final readonly class ProductListAssertion {
             $this->items->getFirstItemDataAccessor(),
         );
     }
+
+    public function assertForbidden(): void {
+        $this->response->assertForbidden();
+    }
 }
