@@ -54,6 +54,34 @@ final readonly class Cart {
     }
 
     /**
+     * @throws InvalidCartException
+     */
+    public function remove(ProductId $productId, int $quantity): self {
+        $items = [];
+        $exists = false;
+        foreach ($this->items as $item) {
+            if ($item->productId->equals($productId)) {
+                $exists = true;
+                $item = $item->remove($quantity);
+                if (null === $item) {
+                    continue;
+                }
+            }
+            $items[] = $item;
+        }
+
+        if (false === $exists) {
+            throw new InvalidCartException('Can’t remove product which does not exist');
+        }
+
+        return new self(
+            id: $this->id,
+            userId: $this->userId,
+            items: $items,
+        );
+    }
+
+    /**
      * @throws ProductNotFoundException
      */
     public function sum(PriceCalculator $calculator): ProductPrice {

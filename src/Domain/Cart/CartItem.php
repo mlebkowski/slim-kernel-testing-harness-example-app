@@ -30,6 +30,24 @@ final readonly class CartItem {
     }
 
     /**
+     * @throws InvalidCartException
+     */
+    public function remove(int $quantity): ?self {
+        if ($quantity === $this->quantity) {
+            return null;
+        }
+
+        if ($quantity > $this->quantity) {
+            throw new InvalidCartException('Cannot remove more than exists in the cart');
+        }
+
+        return new self(
+            productId: $this->productId,
+            quantity: $this->quantity - $quantity,
+        );
+    }
+
+    /**
      * @throws ProductNotFoundException
      */
     public function value(ProductCollection $products): ProductPrice {

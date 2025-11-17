@@ -44,4 +44,26 @@ final class CartApiTest extends ApplicationTestCase {
             ->expectFailure()
             ->addItem(cartId: $cartId, productId: ProductId::some()->value, quantity: 2);
     }
+
+    public function testRemoveProductsFromCart(): void {
+        $cartApi = $this->cartUseCase(UserMother::some());
+
+        $cartId = $cartApi->create()->id;
+        $productId = $this
+            ->productUseCase(Role::None)
+            ->list()
+            ->first()
+            ->id;
+
+        $cartApi->addItem(cartId: $cartId, productId: $productId, quantity: 2);
+        $cartApi->removeItem(cartId: $cartId, productId: $productId, quantity: 1);
+        $cartApi
+            ->get($cartId)
+            ->assertHasTotalPrice()
+            ->firstItem()
+            ->assertProductId($productId)
+            ->assertQuantity(1);
+    }
+
+
 }
