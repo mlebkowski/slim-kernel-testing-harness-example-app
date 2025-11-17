@@ -19,7 +19,7 @@ final readonly class DatabaseSchemaStartupHook implements StartupHook {
         $pdo->exec(
             <<<SQL
             CREATE TABLE `product` (
-                `id` text unique not null, 
+                `id` text unique primary key, 
                 `name` text unique not null,
                 `price` integer not null
             ) 
@@ -29,17 +29,19 @@ final readonly class DatabaseSchemaStartupHook implements StartupHook {
         $pdo->exec(
             <<<SQL
             CREATE TABLE `cart` (
-                `id` integer auto_increment primary key,
-                `user_id` char(32) not null
+                `id` text primary key,
+                `user_id` text not null
             )
             SQL,
         );
 
         $pdo->exec(
             <<<SQL
-            CREATE TABLE `cart_product` (
-                `id` integer auto_increment primary key,
-                `user_id` char(32) not null
+            CREATE TABLE `cart_item` (
+                `cart_id` text not null,
+                `product_id` text not null,
+                `quantity` integer not null,
+                primary key (cart_id, product_id)
             )
             SQL,
         );
