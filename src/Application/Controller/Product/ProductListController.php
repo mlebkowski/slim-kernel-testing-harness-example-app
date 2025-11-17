@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Acme\Application\Controller;
+namespace Acme\Application\Controller\Product;
 
 use Acme\Application\Http\JsonResponseFactory;
-use Acme\Domain\Product\InvalidProductException;
-use Acme\Domain\Product\Product;
 use Acme\Domain\Product\ProductRepository;
 use Psr\Http\Message\ResponseInterface;
 use WonderNetwork\SlimKernel\Http\Serializer\Payload;

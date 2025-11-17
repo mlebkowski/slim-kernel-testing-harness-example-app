@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acme\Application\Controller;
+namespace Acme\Application\Controller\Product;
 
 use Acme\Domain\Product\Product;
 use Acme\Domain\Product\ProductCollection;
