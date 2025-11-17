@@ -6,6 +6,7 @@ namespace Acme\Application\Controller\Cart;
 
 use Acme\Application\Http\JsonResponseFactory;
 use Acme\Domain\Cart\Cart;
+use Acme\Domain\Cart\CartItemLimitReachedException;
 use Acme\Domain\Cart\CartRepository;
 use Acme\Domain\Cart\InvalidCartException;
 use Acme\Domain\Product\ProductId;
@@ -23,7 +24,7 @@ final readonly class CartAddItemController {
     public function __invoke(Cart $cart, #[Payload] CartItemInput $input): ResponseInterface {
         try {
             $cart = $cart->add(ProductId::of($input->productId), $input->quantity);
-        } catch (InvalidCartException $e) {
+        } catch (InvalidCartException|CartItemLimitReachedException $e) {
             return $this->jsonResponseFactory->error($e->getMessage());
         }
 

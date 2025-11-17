@@ -32,6 +32,7 @@ final readonly class Cart {
 
     /**
      * @throws InvalidCartException
+     * @throws CartItemLimitReachedException
      */
     public function add(ProductId $product, int $quantity): self {
         $items = [];
@@ -46,7 +47,7 @@ final readonly class Cart {
 
         if (false === $exists) {
             if (count($this->items) >= self::LIMIT) {
-                throw new CartItemLimitReachedException();
+                throw new CartItemLimitReachedException('The cart item limit has been reached');
             }
 
             $items[] = new CartItem($product, $quantity);

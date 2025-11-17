@@ -51,7 +51,9 @@ final class CartApiTest extends ApplicationTestCase {
 
         $cartApi
             ->expectFailure()
-            ->addItem(cartId: $cartId, productId: $last, quantity: 4);
+            ->addItem(cartId: $cartId, productId: $last, quantity: 4)
+            ->slimErrorPage()
+            ->assertMessage('The cart item limit has been reached');
     }
 
     public function testAddProductsToAnotherUsersCart(): void {
@@ -84,5 +86,15 @@ final class CartApiTest extends ApplicationTestCase {
             ->assertQuantity(1);
     }
 
+    public function testRemoveNonExistingProductFromCart(): void {
+        $cartApi = $this->cartUseCase(UserMother::some());
 
+        $cartId = $cartApi->create()->id;
+
+        $cartApi
+            ->expectFailure()
+            ->removeItem(cartId: $cartId, productId: ProductId::some()->value, quantity: 1)
+            ->slimErrorPage()
+            ->assertMessage('Can’t remove product which does not exist');
+    }
 }
