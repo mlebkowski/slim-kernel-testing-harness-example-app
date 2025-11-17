@@ -22,4 +22,8 @@ final readonly class ProductUseCasesFacade {
             $this->httpClient->get('/product?'.http_build_query(compact('perPage'))),
         );
     }
+
+    public function update(string $id, string $name = null, float $price = null): HttpResponseAssertion {
+        return $this->httpClient->patch("/product/$id", compact('name', 'price'));
+    }
 }

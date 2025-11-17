@@ -20,7 +20,7 @@ final readonly class ProductAssertion {
 
     public function __construct(
         private SlimKernelHttpClient $httpClient,
-        private string $id,
+        public string $id,
         private string $name,
         private float $price,
     ) {
@@ -32,6 +32,16 @@ final readonly class ProductAssertion {
 
     public function assertPrice(float $expected): self {
         Assert::assertSame($expected, $this->price);
+        return $this;
+    }
+
+    public function assertNamed(string $name): self {
+        Assert::assertSame($name, $this->name);
+        return $this;
+    }
+
+    public function assertNotNamed(string $name): self {
+        Assert::assertNotSame($name, $this->name);
         return $this;
     }
 }

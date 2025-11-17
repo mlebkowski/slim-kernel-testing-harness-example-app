@@ -35,6 +35,25 @@ final class ProductApiTest extends Application\ApplicationTestCase {
             ->assertDoesNotExist();
     }
 
+    public function testCanEditProduct(): void {
+        $randomName = 'Diablo & Hellfire';
+        $randomPrice = 0.50; // is it on sale?
+
+        $productApi = $this->productUseCase(Role::Admin);
+
+        $productId = $productApi
+            ->list()
+            ->first()
+            ->assertNotNamed($randomName)
+            ->id;
+
+        $productApi->update(id: $productId, name: $randomName);
+        $productApi->list()->first()->assertNamed($randomName);
+
+        $productApi->update(id: $productId, price: $randomPrice);
+        $productApi->list()->first()->assertPrice($randomPrice);
+    }
+
     public function testNameIsUnique(): void {
         $this->productUseCase(Role::Admin)
             ->expectFailure()
