@@ -7,6 +7,7 @@ use Acme\Application\Controller\ProductAddController;
 use Acme\Application\Controller\ProductDeleteController;
 use Acme\Application\Controller\ProductListController;
 use Acme\Application\Controller\ProductUpdateController;
+use Acme\Application\Transaction\ProductTransactionMiddleware;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface;
 
@@ -20,5 +21,6 @@ return static function (App $app): void {
                 $app->patch('', ProductUpdateController::class);
             });
         })
+        ->add(ProductTransactionMiddleware::class)
         ->add(RequireAdminRoleMiddleware::class);
 };
