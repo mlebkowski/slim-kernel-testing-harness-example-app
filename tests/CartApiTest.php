@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Acme;
 
 use Acme\Application\ApplicationTestCase;
+use Acme\Application\Authorization\Role;
+use Acme\Domain\Product\ProductId;
 use Acme\User\UserMother;
 
 final class CartApiTest extends ApplicationTestCase {
@@ -12,5 +14,34 @@ final class CartApiTest extends ApplicationTestCase {
         $this
             ->cartUseCase(UserMother::some())
             ->create();
+    }
+
+    public function testAddProductsCart(): void {
+        $cartApi = $this->cartUseCase(UserMother::some());
+
+        $cartId = $cartApi->create()->id;
+        $productId = $this
+            ->productUseCase(Role::None)
+            ->list()
+            ->first()
+            ->id;
+
+        $cartApi->addItem(cartId: $cartId, productId: $productId, quantity: 2);
+        $cartApi
+            ->get($cartId)
+            ->assertHasTotalPrice()
+            ->firstItem()
+            ->assertProductId($productId)
+            ->assertQuantity(2);
+    }
+
+    public function testAddProductsToAnotherUsersCart(): void {
+        $alpha = $this->cartUseCase(UserMother::some());
+        $bravo = $this->cartUseCase(UserMother::some());
+
+        $cartId = $alpha->create()->id;
+        $bravo
+            ->expectFailure()
+            ->addItem(cartId: $cartId, productId: ProductId::some()->value, quantity: 2);
     }
 }

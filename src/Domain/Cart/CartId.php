@@ -11,6 +11,9 @@ final readonly class CartId {
         return new self(self::PREFIX.bin2hex(random_bytes(16)));
     }
 
+    /**
+     * @throws InvalidCartException
+     */
     public static function of(string $id): self {
         return new self($id);
     }

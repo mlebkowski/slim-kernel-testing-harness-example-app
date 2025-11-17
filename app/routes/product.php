@@ -15,12 +15,15 @@ return static function (App $app): void {
     $app
         ->group('/product', function (RouteCollectorProxyInterface $app): void {
             $app->get('', ProductListController::class);
-            $app->post('', ProductAddController::class);
-            $app->group('/{id}', function (RouteCollectorProxyInterface $app): void {
-                $app->delete('', ProductDeleteController::class);
-                $app->patch('', ProductUpdateController::class);
-            });
-        })
-        ->add(ProductTransactionMiddleware::class)
-        ->add(RequireAdminRoleMiddleware::class);
+            $app
+                ->group('', function (RouteCollectorProxyInterface $app) {
+                    $app->post('', ProductAddController::class);
+                    $app->group('/{id}', function (RouteCollectorProxyInterface $app): void {
+                        $app->delete('', ProductDeleteController::class);
+                        $app->patch('', ProductUpdateController::class);
+                    });
+                })
+                ->add(ProductTransactionMiddleware::class)
+                ->add(RequireAdminRoleMiddleware::class);
+        });
 };

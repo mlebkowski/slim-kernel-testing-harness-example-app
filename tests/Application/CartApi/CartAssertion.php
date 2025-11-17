@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Acme\Application\CartApi;
 
+use PHPUnit\Framework\Assert;
 use WonderNetwork\SlimKernel\Accessor\ArrayAccessor;
 use WonderNetwork\SlimKernelTestingHarness\KernelHttpClient\HttpResponseAssertion;
-use function WonderNetwork\SlimKernel\Collection\map;
 
 final readonly class CartAssertion {
     public static function of(HttpResponseAssertion $response): self {
@@ -14,22 +14,25 @@ final readonly class CartAssertion {
         return new self(
             id: $data->string('id'),
             userId: $data->requireString('userId'),
-            items: CartItemListAssertion::of(
-                ...
-                map(
-                    $data->array('items'),
-                    static fn (mixed $item) => CartItemAssertion::of($item),
-                ),
-            ),
+            totalPrice: $data->requireInt('totalPrice'),
+            items: CartItemListAssertion::of($data->array('items')),
         );
     }
 
     public function __construct(
-        private string $id,
+        public string $id,
         private string $userId,
+        private int $totalPrice,
         private CartItemListAssertion $items,
     ) {
     }
 
+    public function assertHasTotalPrice(): self {
+        Assert::assertGreaterThan(0, $this->totalPrice);
+        return $this;
+    }
 
+    public function firstItem(): CartItemAssertion {
+        return $this->items->first();
+    }
 }

@@ -15,4 +15,14 @@ final readonly class CartUseCasesFacade {
             $this->httpClient->post('/cart'),
         );
     }
+
+    public function addItem(string $cartId, string $productId, int $quantity): void {
+        $this->httpClient->post("/cart/$cartId/item", compact('productId', 'quantity'));
+    }
+
+    public function get(string $cartId): CartAssertion {
+        return CartAssertion::of(
+            $this->httpClient->get("/cart/$cartId"),
+        );
+    }
 }

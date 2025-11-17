@@ -54,10 +54,11 @@ final readonly class PdoProductRepository implements ProductRepository {
 
 
     public function getMany(ProductId ...$ids): ProductCollection {
-        $products = $this->pdo->prepare("SELECT * FROM product WHERE id in (:ids)");
-        $products->execute([
-            ':ids' => map($ids, static fn (ProductId $id) => $id->value),
-        ]);
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+        $products = $this->pdo->prepare("SELECT * FROM product WHERE id in ($placeholders)");
+        $products->execute(
+            map($ids, static fn (ProductId $id) => $id->value),
+        );
 
         return new ProductCollection(
             ...
