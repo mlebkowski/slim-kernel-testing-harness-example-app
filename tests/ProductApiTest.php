@@ -7,6 +7,16 @@ namespace Acme;
 use Acme\Application\Authorization\Role;
 
 final class ProductApiTest extends Application\ApplicationTestCase {
+    public function testPagination(): void {
+        $this->productUseCase(Role::Admin)
+            ->list()
+            ->expectCount(3);
+
+        $this->productUseCase(Role::Admin)
+            ->list(page: 2)
+            ->expectCount(2);
+    }
+
     public function testCanAddProduct(): void {
         $this->productUseCase(Role::Admin)
             ->add(name: 'Fallout 2', price: 2.99);

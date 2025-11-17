@@ -17,9 +17,9 @@ final readonly class ProductUseCasesFacade {
         return $this->httpClient->post('/product', compact('name', 'price'));
     }
 
-    public function list(int $perPage = 3): ProductApi\ProductListAssertion {
+    public function list(int $page = null, int $perPage = null): ProductApi\ProductListAssertion {
         return ProductApi\ProductListAssertion::ofJsonResponse(
-            $this->httpClient->get('/product?'.http_build_query(compact('perPage'))),
+            $this->httpClient->get('/product?'.http_build_query(compact('page', 'perPage'))),
         );
     }
 
