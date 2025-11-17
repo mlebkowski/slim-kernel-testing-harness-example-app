@@ -10,6 +10,8 @@ use Acme\Domain\Product\ProductPrice;
 use Acme\Domain\User\User;
 
 final readonly class Cart {
+    private const int LIMIT = 3;
+
     public static function empty(User $user): self {
         return new self(
             id: CartId::some(),
@@ -43,6 +45,10 @@ final readonly class Cart {
         }
 
         if (false === $exists) {
+            if (count($this->items) >= self::LIMIT) {
+                throw new CartItemLimitReachedException();
+            }
+
             $items[] = new CartItem($product, $quantity);
         }
 

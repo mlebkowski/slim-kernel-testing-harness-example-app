@@ -43,4 +43,11 @@ final readonly class ProductListAssertion {
     public function assertForbidden(): void {
         $this->response->assertForbidden();
     }
+
+    /**
+     * @return string[]
+     */
+    public function allIds(): array {
+        return $this->items->column('id');
+    }
 }
