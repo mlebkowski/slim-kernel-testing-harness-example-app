@@ -35,4 +35,4 @@ jobs:
       - name: PHPStan
         run: composer run phpstan
       - name: PHPUnit
-        run: compose run phpunit
+        run: composer run phpunit
