@@ -12,4 +12,4 @@ vendor/bin/phpstan
 vendor/bin/phpunit
 ```
 
-[harness]: github.com/WonderNetwork/slim-kernel-testing-harness
+[harness]: https://github.com/WonderNetwork/slim-kernel-testing-harness
