@@ -30,7 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install
+      - name: Code Style
+        run: composer run cs:check
       - name: PHPStan
-        run: vendor/bin/phpstan
+        run: composer run phpstan
       - name: PHPUnit
-        run: vendor/bin/phpunit
+        run: compose run phpunit

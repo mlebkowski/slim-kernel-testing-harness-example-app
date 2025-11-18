@@ -52,7 +52,6 @@ final readonly class PdoProductRepository implements ProductRepository {
         );
     }
 
-
     public function getMany(ProductId ...$ids): ProductCollection {
         $placeholders = implode(',', array_fill(0, count($ids), '?'));
         $products = $this->pdo->prepare("SELECT * FROM product WHERE id in ($placeholders)");
@@ -74,7 +73,7 @@ final readonly class PdoProductRepository implements ProductRepository {
         $this->pdo
             ->prepare(
                 <<<SQL
-                INSERT INTO product (id, name, price) 
+                INSERT INTO product (id, name, price)
                 VALUES (:id, :name, :price)
                 ON CONFLICT DO UPDATE SET name = :name, price = :price
                 SQL,

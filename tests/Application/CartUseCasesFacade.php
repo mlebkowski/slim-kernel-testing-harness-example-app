@@ -31,11 +31,7 @@ final readonly class CartUseCasesFacade {
     public function removeItem(string $cartId, string $productId, int $quantity): HttpResponseAssertion {
         // I didn’t anticipate I’d want to use payload with DELETE requests:
         return $this->httpClient->request(
-            RequestBuilder
-                ::of(
-                    method: "DELETE",
-                    uri: "/cart/$cartId/item"
-                )
+            RequestBuilder::of("DELETE", "/cart/$cartId/item")
                 ->withParsedBody(compact('productId', 'quantity'))
                 ->build(),
         );

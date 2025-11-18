@@ -1,4 +1,16 @@
 {
+  "scripts": {
+    "ci": [
+      "@cs:check",
+      "@phpstan",
+      "@phpunit"
+    ],
+    "phpstan": "vendor/bin/phpstan",
+    "phpunit": "vendor/bin/phpunit",
+    "cs": "@cs:check",
+    "cs:check": "vendor/bin/php-cs-fixer check --diff --ansi",
+    "cs:fix": "vendor/bin/php-cs-fixer fix"
+  },
   "autoload": {
     "psr-4": {
       "Acme\\": "src"
@@ -16,6 +28,7 @@
     "wondernetwork/slim-kernel-testing-harness": "^1",
     "phpunit/phpunit": "^12.4",
     "phpstan/phpstan": "^2.1",
-    "bnf/phpstan-psr-container": "^1.1"
+    "bnf/phpstan-psr-container": "^1.1",
+    "friendsofphp/php-cs-fixer": "^3.89"
   }
 }

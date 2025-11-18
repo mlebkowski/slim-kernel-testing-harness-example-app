@@ -8,8 +8,7 @@ requirements, entirely tested using the library.
 
 ```
 composer install
-vendor/bin/phpstan
-vendor/bin/phpunit
+composer run cs
 ```
 
 [harness]: https://github.com/WonderNetwork/slim-kernel-testing-harness

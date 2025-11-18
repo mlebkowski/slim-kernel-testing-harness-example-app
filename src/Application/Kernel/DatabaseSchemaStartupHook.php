@@ -19,10 +19,10 @@ final readonly class DatabaseSchemaStartupHook implements StartupHook {
         $pdo->exec(
             <<<SQL
             CREATE TABLE `product` (
-                `id` text unique primary key, 
+                `id` text unique primary key,
                 `name` text unique not null,
                 `price` integer not null
-            ) 
+            )
             SQL,
         );
 

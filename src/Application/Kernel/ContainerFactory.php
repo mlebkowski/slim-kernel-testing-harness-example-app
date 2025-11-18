@@ -10,7 +10,7 @@ use WonderNetwork\SlimKernel\SlimExtension\ErrorMiddlewareConfiguration;
 use WonderNetwork\SlimKernel\StartupHook\RoutesStartupHook;
 
 final readonly class ContainerFactory {
-    public function build(Environment $environment): ContainerInterface {
+    public static function build(Environment $environment): ContainerInterface {
         $envName = $environment->value;
 
         return KernelBuilder::start(dirname(__DIR__, 3))

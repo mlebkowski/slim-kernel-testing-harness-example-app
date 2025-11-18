@@ -16,7 +16,7 @@ class ApplicationTestCase extends TestCase {
     private App $app;
 
     protected function setUp(): void {
-        $container = (new ContainerFactory)->build(Environment::Test);
+        $container = ContainerFactory::build(Environment::Test);
         $this->app = $container->get(App::class);
     }
 

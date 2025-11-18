@@ -86,7 +86,6 @@ final class CartApiTest extends ApplicationTestCase {
             ->assertQuantity(1);
     }
 
-
     public function testRemoveMoreProductsThatAreInCart(): void {
         $cartApi = $this->cartUseCase(UserMother::some());
 
@@ -105,7 +104,7 @@ final class CartApiTest extends ApplicationTestCase {
             ->assertMessage('Cannot remove more than exists in the cart');
     }
 
-        public function testRemoveNonExistingProductFromCart(): void {
+    public function testRemoveNonExistingProductFromCart(): void {
         $cartApi = $this->cartUseCase(UserMother::some());
 
         $cartId = $cartApi->create()->id;

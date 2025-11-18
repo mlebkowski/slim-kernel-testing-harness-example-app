@@ -18,8 +18,7 @@ final readonly class ProductListController {
     }
 
     public function __invoke(#[Payload(PayloadSource::Get)] ProductListInput $input): ResponseInterface {
-
-        $products =$this->products->all(page: $input->page, perPage: $input->perPage);
+        $products = $this->products->all(page: $input->page, perPage: $input->perPage);
 
         return $this->jsonResponseFactory->create(ProductOutput::fromMany($products));
     }
