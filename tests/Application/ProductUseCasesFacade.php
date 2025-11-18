@@ -26,4 +26,8 @@ final readonly class ProductUseCasesFacade {
     public function update(string $id, string $name = null, int $price = null): HttpResponseAssertion {
         return $this->httpClient->patch("/product/$id", compact('name', 'price'));
     }
+
+    public function delete(string $productId): HttpResponseAssertion {
+        return $this->httpClient->delete("/product/$productId");
+    }
 }

@@ -86,7 +86,26 @@ final class CartApiTest extends ApplicationTestCase {
             ->assertQuantity(1);
     }
 
-    public function testRemoveNonExistingProductFromCart(): void {
+
+    public function testRemoveMoreProductsThatAreInCart(): void {
+        $cartApi = $this->cartUseCase(UserMother::some());
+
+        $cartId = $cartApi->create()->id;
+        $productId = $this
+            ->productUseCase(Role::None)
+            ->list()
+            ->first()
+            ->id;
+
+        $cartApi->addItem(cartId: $cartId, productId: $productId, quantity: 2);
+        $cartApi
+            ->expectFailure()
+            ->removeItem(cartId: $cartId, productId: $productId, quantity: 3)
+            ->slimErrorPage()
+            ->assertMessage('Cannot remove more than exists in the cart');
+    }
+
+        public function testRemoveNonExistingProductFromCart(): void {
         $cartApi = $this->cartUseCase(UserMother::some());
 
         $cartId = $cartApi->create()->id;
@@ -96,5 +115,19 @@ final class CartApiTest extends ApplicationTestCase {
             ->removeItem(cartId: $cartId, productId: ProductId::some()->value, quantity: 1)
             ->slimErrorPage()
             ->assertMessage('Can’t remove product which does not exist');
+    }
+
+    public function testGetInvalidCart(): void {
+        $this
+            ->cartUseCase(UserMother::some())
+            ->expectFailure()
+            ->get('123');
+    }
+
+    public function testGetNotExistingCart(): void {
+        $this
+            ->cartUseCase(UserMother::some())
+            ->expectFailure()
+            ->get('crt_123');
     }
 }

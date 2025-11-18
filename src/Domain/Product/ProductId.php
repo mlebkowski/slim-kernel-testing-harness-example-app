@@ -15,7 +15,7 @@ final readonly class ProductId {
         return new self($id);
     }
 
-    public function __construct(public string $value) {
+    private function __construct(public string $value) {
         if (false === str_starts_with($value, self::PREFIX)) {
             throw new InvalidProductException('Invalid product id: '.$value);
         }

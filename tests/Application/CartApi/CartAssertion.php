@@ -13,8 +13,8 @@ final readonly class CartAssertion {
         $data = ArrayAccessor::of($response->expectJson());
         return new self(
             id: $data->string('id'),
-            userId: $data->requireString('userId'),
-            totalPrice: $data->requireInt('totalPrice'),
+            userId: $data->string('userId'),
+            totalPrice: $data->int('totalPrice'),
             items: CartItemListAssertion::of($data->array('items')),
         );
     }

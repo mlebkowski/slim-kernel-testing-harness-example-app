@@ -7,6 +7,7 @@ use Acme\Application\Controller\Cart\CartCreateController;
 use Acme\Application\Controller\Cart\CartGetController;
 use Acme\Application\Controller\Cart\CartRemoveItemController;
 use Acme\Application\Controller\Cart\UserCartMiddleware;
+use Acme\Application\Http\JsonExceptionsMiddleware;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface;
 
@@ -21,5 +22,6 @@ return static function (App $app): void {
                     $app->delete('/item', CartRemoveItemController::class);
                 })
                 ->add(UserCartMiddleware::class);
-        });
+        })
+        ->add(JsonExceptionsMiddleware::class);
 };

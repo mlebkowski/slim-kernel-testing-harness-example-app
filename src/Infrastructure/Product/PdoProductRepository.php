@@ -30,7 +30,7 @@ final readonly class PdoProductRepository implements ProductRepository {
             ':id' => $id->value,
         ]);
 
-        $data = $sql->fetch(PDO::FETCH_ASSOC) ?? throw new ProductNotFoundException();
+        $data = $sql->fetch(PDO::FETCH_ASSOC) ?: throw new ProductNotFoundException();
         return $this->hydrateOne($data);
     }
 

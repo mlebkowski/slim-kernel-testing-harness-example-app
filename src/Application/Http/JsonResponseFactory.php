@@ -19,9 +19,9 @@ final readonly class JsonResponseFactory {
     /**
      * Convenience method
      */
-    public function error(string $message): ResponseInterface {
+    public function error(string $message, int $code = StatusCodeInterface::STATUS_BAD_REQUEST): ResponseInterface {
         // see, I could’ve used `compact()` but didn’t! :D
-        return $this->create(['message' => $message], StatusCodeInterface::STATUS_BAD_REQUEST);
+        return $this->create(['message' => $message], $code);
     }
 
     public function create(mixed $data, int $code = StatusCodeInterface::STATUS_OK): ResponseInterface {

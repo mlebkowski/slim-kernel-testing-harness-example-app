@@ -24,7 +24,7 @@ final readonly class PdoCartRepository implements CartRepository {
         $cartSql->execute([':id' => $id->value]);
 
         $cartData = $cartSql->fetch(PDO::FETCH_ASSOC)
-            ?? throw new CartNotFoundException();
+            ?: throw new CartNotFoundException();
         $cartDataAccessor = ArrayAccessor::of($cartData);
 
         $itemSql = $this->pdo->prepare('SELECT * FROM cart_item WHERE cart_id = :id');
