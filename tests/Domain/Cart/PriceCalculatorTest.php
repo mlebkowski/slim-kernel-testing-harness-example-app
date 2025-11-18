@@ -10,7 +10,7 @@ use Acme\Domain\Product\ProductRepositoryStub;
 use Acme\User\UserMother;
 use PHPUnit\Framework\TestCase;
 
-class PriceCalculatorTest extends TestCase {
+final class PriceCalculatorTest extends TestCase {
     public function testCalculatorWorks(): void {
         $productAlpha = ProductMother::priced(199);
         $productBravo = ProductMother::priced(299);
@@ -19,7 +19,7 @@ class PriceCalculatorTest extends TestCase {
             ProductRepositoryStub::givenProductsExists(
                 $productAlpha,
                 $productBravo,
-                $productCharlie
+                $productCharlie,
             ),
         );
 

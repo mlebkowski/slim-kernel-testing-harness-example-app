@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Acme\Infrastructure\Product;
 
-use Acme\Domain\Product\ProductCollection;
-use Acme\Domain\Product\ProductNotFoundException;
 use Acme\Domain\Product\InvalidProductException;
 use Acme\Domain\Product\Product;
+use Acme\Domain\Product\ProductCollection;
 use Acme\Domain\Product\ProductId;
 use Acme\Domain\Product\ProductName;
+use Acme\Domain\Product\ProductNotFoundException;
 use Acme\Domain\Product\ProductPrice;
 use Acme\Domain\Product\ProductRepository;
 use PDO;
@@ -31,6 +31,7 @@ final readonly class PdoProductRepository implements ProductRepository {
         ]);
 
         $data = $sql->fetch(PDO::FETCH_ASSOC) ?: throw new ProductNotFoundException();
+
         return $this->hydrateOne($data);
     }
 
@@ -96,6 +97,7 @@ final readonly class PdoProductRepository implements ProductRepository {
         ]);
 
         $data = $sql->fetch(PDO::FETCH_ASSOC);
+
         return $data ? $this->hydrateOne($data) : null;
     }
 
@@ -113,6 +115,7 @@ final readonly class PdoProductRepository implements ProductRepository {
      */
     private function hydrateOne(mixed $row): Product {
         $accessor = ArrayAccessor::of($row);
+
         return new Product(
             id: ProductId::of($accessor->string('id')),
             name: ProductName::of($accessor->string('name')),

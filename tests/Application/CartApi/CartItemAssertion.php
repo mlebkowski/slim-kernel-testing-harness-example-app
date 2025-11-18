@@ -23,11 +23,13 @@ final readonly class CartItemAssertion {
 
     public function assertProductId(string $productId): self {
         Assert::assertSame($this->productId, $productId);
+
         return $this;
     }
 
     public function assertQuantity(int $expected): self {
         Assert::assertSame($this->quantity, $expected);
+
         return $this;
     }
 }

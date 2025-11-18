@@ -49,6 +49,7 @@ final readonly class PdoCartRepository implements CartRepository {
 
     public function save(Cart $cart): void {
         $this->pdo->beginTransaction();
+
         try {
             $this->pdo
                 ->prepare('DELETE FROM cart_item WHERE cart_id = :id')
@@ -75,6 +76,7 @@ final readonly class PdoCartRepository implements CartRepository {
             $this->pdo->commit();
         } catch (Throwable $e) {
             $this->pdo->rollBack();
+
             throw $e;
         }
     }

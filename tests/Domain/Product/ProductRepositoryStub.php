@@ -41,7 +41,7 @@ final readonly class ProductRepositoryStub implements ProductRepository {
     public function all(int $page, int $perPage): ProductCollection {
         return new ProductCollection(
             ...
-            array_slice($this->products, ($page - 1) * $perPage, $perPage)
+            array_slice($this->products, ($page - 1) * $perPage, $perPage),
         );
     }
 

@@ -20,6 +20,7 @@ final readonly class ProductListAssertion {
             haystack: $this->items->data,
             message: "No such product exists.",
         );
+
         return $this;
     }
 

@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\App;
 use WonderNetwork\SlimKernelTestingHarness\KernelHttpClient\SlimKernelHttpClient;
 
-class ApplicationTestCase extends TestCase {
+abstract class ApplicationTestCase extends TestCase {
     private App $app;
 
     protected function setUp(): void {

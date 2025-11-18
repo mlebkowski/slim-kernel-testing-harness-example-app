@@ -45,6 +45,7 @@ final class CartApiTest extends ApplicationTestCase {
             ->allIds();
 
         $last = array_pop($productIds);
+
         foreach ($productIds as $productId) {
             $cartApi->addItem(cartId: $cartId, productId: $productId);
         }

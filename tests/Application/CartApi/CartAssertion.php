@@ -11,6 +11,7 @@ use WonderNetwork\SlimKernelTestingHarness\KernelHttpClient\HttpResponseAssertio
 final readonly class CartAssertion {
     public static function of(HttpResponseAssertion $response): self {
         $data = ArrayAccessor::of($response->expectJson());
+
         return new self(
             id: $data->string('id'),
             userId: $data->string('userId'),
@@ -29,6 +30,7 @@ final readonly class CartAssertion {
 
     public function assertHasTotalPrice(): self {
         Assert::assertGreaterThan(0, $this->totalPrice);
+
         return $this;
     }
 

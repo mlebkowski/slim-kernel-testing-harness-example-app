@@ -7,7 +7,7 @@ namespace Acme\Domain\Cart;
 use Acme\Domain\Product\ProductId;
 use PHPUnit\Framework\TestCase;
 
-class CartItemTest extends TestCase {
+final class CartItemTest extends TestCase {
     public function testAdd(): void {
         $sut = new CartItem(
             productId: ProductId::some(),

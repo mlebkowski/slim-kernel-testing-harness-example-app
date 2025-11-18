@@ -37,6 +37,7 @@ final readonly class Cart {
     public function add(ProductId $product, int $quantity): self {
         $items = [];
         $exists = false;
+
         foreach ($this->items as $item) {
             if ($item->productId->equals($product)) {
                 $exists = true;
@@ -66,10 +67,12 @@ final readonly class Cart {
     public function remove(ProductId $productId, int $quantity): self {
         $items = [];
         $exists = false;
+
         foreach ($this->items as $item) {
             if ($item->productId->equals($productId)) {
                 $exists = true;
                 $item = $item->remove($quantity);
+
                 if (null === $item) {
                     continue;
                 }

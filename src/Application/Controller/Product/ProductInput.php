@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Acme\Application\Controller\Product;
 
-class ProductInput {
+final class ProductInput {
     public string $name;
     public int $price;
 }

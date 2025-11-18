@@ -8,7 +8,7 @@ use Acme\Domain\Product\ProductId;
 use Acme\User\UserMother;
 use PHPUnit\Framework\TestCase;
 
-class CartTest extends TestCase {
+final class CartTest extends TestCase {
     public function testAdd(): void {
         $cart = Cart::empty(UserMother::some());
 

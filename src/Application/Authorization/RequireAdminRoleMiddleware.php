@@ -20,6 +20,7 @@ final readonly class RequireAdminRoleMiddleware implements MiddlewareInterface {
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
         $role = $request->getAttribute(Role::class);
+
         if (Role::Admin !== $role) {
             return $this->responseFactory->create(
                 data: ['message' => 'Forbidden'],

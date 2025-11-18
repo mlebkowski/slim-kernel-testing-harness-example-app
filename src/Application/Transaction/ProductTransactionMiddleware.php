@@ -17,12 +17,15 @@ final readonly class ProductTransactionMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
         $this->pdo->beginTransaction();
+
         try {
-            $response  = $handler->handle($request);
+            $response = $handler->handle($request);
             $this->pdo->commit();
+
             return $response;
         } catch (Throwable $e) {
             $this->pdo->rollBack();
+
             throw $e;
         }
     }

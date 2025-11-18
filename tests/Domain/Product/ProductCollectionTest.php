@@ -6,11 +6,11 @@ namespace Acme\Domain\Product;
 
 use PHPUnit\Framework\TestCase;
 
-class ProductCollectionTest extends TestCase {
+final class ProductCollectionTest extends TestCase {
     public function testPrice(): void {
         $sut = new ProductCollection(
             $alpha = ProductMother::priced(310),
-            $bravo = ProductMother::priced(125)
+            $bravo = ProductMother::priced(125),
         );
 
         self::assertEquals(ProductPrice::of(310), $sut->price($alpha->id));

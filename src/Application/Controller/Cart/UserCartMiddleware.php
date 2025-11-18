@@ -24,6 +24,7 @@ final readonly class UserCartMiddleware implements MiddlewareInterface {
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface {
         $id = RouteArgument::of($request)->requireString('id');
+
         try {
             $cartId = CartId::of($id);
         } catch (InvalidCartException) {

@@ -32,16 +32,19 @@ final readonly class ProductAssertion {
 
     public function assertPrice(int $expected): self {
         Assert::assertSame($expected, $this->price);
+
         return $this;
     }
 
     public function assertNamed(string $name): self {
         Assert::assertSame($name, $this->name);
+
         return $this;
     }
 
     public function assertNotNamed(string $name): self {
         Assert::assertNotSame($name, $this->name);
+
         return $this;
     }
 }
